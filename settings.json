@@ -1,6 +1,0 @@
-{
-    "startDelay": 2,
-    "gracePeriod": 20,
-    "configSaveLocation": "%TEMP%",
-    "dummyMonitorId": "LNX0000"
-}

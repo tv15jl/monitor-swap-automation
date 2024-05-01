@@ -1,7 +1,7 @@
 ﻿param($async)
 $path = (Split-Path $MyInvocation.MyCommand.Path -Parent)
 Set-Location $path
-$settings = Get-Content -Path .\settings.json | ConvertFrom-Json
+$settings = Get-Content -Path .\MonitorSwapper_Settings.json | ConvertFrom-Json
 
 # Since pre-commands in sunshine are synchronous, we'll launch this script again in another powershell process
 if ($null -eq $async) {
@@ -11,7 +11,7 @@ if ($null -eq $async) {
 }
 
 
-. .\MonitorSwapper-Functions.ps1
+. .\MonitorSwapper_Functions.ps1
 
 if (Test-Path "\\.\pipe\MonitorSwapper") {
     Send-PipeMessage MonitorSwapper Terminate
@@ -40,7 +40,7 @@ try {
     # Asynchronously start the MonitorSwapper, so we can use a named pipe to terminate it.
     Start-Job -Name MonitorSwapperJob -ScriptBlock {
         param($path, $gracePeriod)
-        . $path\MonitorSwapper-Functions.ps1
+        . $path\MonitorSwapper_Functions.ps1
         $lastStreamed = Get-Date
 
 
