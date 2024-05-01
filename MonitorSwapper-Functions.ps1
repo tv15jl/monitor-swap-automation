@@ -35,7 +35,7 @@ function OnStreamStart() {
 function IsMonitorActive($monitorId) {
     # For some displays, the primary screen can't be set until it wakes up from sleep.
     # This will continually poll the configuration to make sure the display has been set.
-    $filePath = "$configSaveLocation\current_monitor_config.cfg"
+    $filePath = "$configSaveLocation\MultiMonitorTool_Temp.cfg"
     & .\MultiMonitorTool.exe /SaveConfig $filePath
     Start-Sleep -Seconds 1
 
