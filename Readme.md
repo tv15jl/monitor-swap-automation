@@ -71,7 +71,7 @@ This is useful for users of Sunshine (a screen sharing software) who experience 
 8. Install the script by double clicking the Install.bat file, you may get a smart-screen warning... this is normal.
 9. You will be prompted for administrator rights, as modifying Sunshine configuration will require admin rights in the coming future.
 10. Verify that the sunshine.conf file is configured properly, if successful the global_prep_cmd should look like this
-    global_prep_cmd = [{"do":"powershell.exe -executionpolicy bypass -file \"F:\\sources\\MonitorSwapAutomation\\MonitorSwap-Dummy.ps1\"","elevated":"false","undo":"powershell.exe -executionpolicy bypass -file \"F:\\sources\\MonitorSwapAutomation\\MonitorSwap-Functions.ps1\" True"}]
+    global_prep_cmd = [{"do":"powershell.exe -executionpolicy bypass -file \"<DRIVE>:\\<FOLDER>\\MonitorSwapAutomation\\MonitorSwap.ps1\"","elevated":"false","undo":"powershell.exe -executionpolicy bypass -file \"<DRIVE>:\\<FOLDER>\\MonitorSwapAutomation\\MonitorSwap-Functions.ps1\" True"}]
 
 The paths referenced above will vary on your machine.
 ## TROUBLESHOOTING
