@@ -20,18 +20,18 @@ if (Test-Path "\\.\pipe\MonitorSwapper") {
 
 if (Test-Path "\\.\pipe\MonitorSwapper-OnStreamEnd") {
     Send-PipeMessage MonitorSwapper-OnStreamEnd Terminate
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 4
 }
 
 # Attempt to start the transcript multiple times in case previous process is still running.
-for ($i = 0; $i -lt 10; $i++) {
+for ($i = 0; $i -lt 5; $i++) {
     
     try {
         Start-Transcript .\log.txt -ErrorAction Stop
         break;
     }
     catch {
-        Start-Sleep -Seconds 1
+        Start-Sleep -Seconds 2
     }
 }
 
@@ -60,7 +60,7 @@ try {
                 }
             }
             finally {
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
             }
         }
     
@@ -71,13 +71,13 @@ try {
     Start-Job -Name "MonitorSwapper-Pipe" -ScriptBlock {
         Register-EngineEvent -SourceIdentifier MonitorSwapper -Forward
         $pipeName = "MonitorSwapper"
-        for ($i = 0; $i -lt 10; $i++) {
+        for ($i = 0; $i -lt 5; $i++) {
             # We could be pending a previous termination, so lets wait up to 10 seconds.
             if (-not (Test-Path "\\.\pipe\$pipeName")) {
                 break
             }
             
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 2
         }
 
 
@@ -102,7 +102,7 @@ try {
 
     Write-Host "Waiting for the next event to be called... (for starting/ending stream)"
     while ($true) {
-        Start-Sleep -Seconds 1
+        Start-Sleep -Seconds 2
         $eventFired = Get-Event -SourceIdentifier MonitorSwapper -ErrorAction SilentlyContinue
         if ($null -ne $eventFired) {
             $eventName = $eventFired.MessageData
@@ -114,7 +114,7 @@ try {
                 $job = OnStreamEndAsJob
                 while ($job.State -ne "Completed") {
                     $job | Receive-Job
-                    Start-Sleep -Seconds 1
+                    Start-Sleep -Seconds 2
                 }
                 $job | Wait-Job | Receive-Job
                 break;

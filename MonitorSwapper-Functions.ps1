@@ -13,7 +13,7 @@ function OnStreamStart() {
     # and a stream is initiated again, the display switcher built into windows (Windows + P) may not update and remain stuck on the last used setting.
     # This can cause significant problems in some games, including frozen visuals and black screens.    
     & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Stream.cfg"
-    Start-Sleep -Seconds 2
+    Start-Sleep -Seconds 4
     for ($i = 0; $i -lt 6; $i++) {
         if (-not (IsMonitorActive -monitorId $dummyMonitorId)) {
             & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Stream.cfg"
@@ -25,7 +25,7 @@ function OnStreamStart() {
             Write-Host "Failed to verify dummy plug was activated, did you make sure dummyMonitorId was included and was properly escaped with double backslashes?"
             return;
         }
-        Start-Sleep -Seconds 1
+        Start-Sleep -Seconds 2
     }
 
     Write-Output "Dummy plug activated"
@@ -37,7 +37,7 @@ function IsMonitorActive($monitorId) {
     # This will continually poll the configuration to make sure the display has been set.
     $filePath = "$configSaveLocation\MultiMonitorTool_Temp.cfg"
     & .\MultiMonitorTool.exe /SaveConfig $filePath
-    Start-Sleep -Seconds 1
+    Start-Sleep -Seconds 2
 
     $currentTime = Get-Date
 
@@ -52,14 +52,14 @@ function IsMonitorActive($monitorId) {
         return $false        
     }
 
-    $monitorConfigLines = (Get-Content -Path $filePath | Select-String "MonitorID=.*|SerialNumber=.*|Width.*|Height.*|DisplayFrequency.*")
+    $monitorConfigLines = (Get-Content -Path $filePath | Select-String "MonitorID=.*|Width.*|Height.*|DisplayFrequency.*")
     for ($i = 0; $i -lt $monitorConfigLines.Count; $i++) {
         $configMonitorId = ($monitorConfigLines[$i] -split "=") | Select-Object -Last 1
 
         if ($configMonitorId -eq $monitorId) {
-            $width = ($monitorConfigLines[$i + 2] -split "=") | Select-Object -Last 1
-            $height = ($monitorConfigLines[$i + 3] -split "=") | Select-Object -Last 1
-            $refresh = ($monitorConfigLines[$i + 4] -split "=") | Select-Object -Last 1
+            $width = ($monitorConfigLines[$i + 1] -split "=") | Select-Object -Last 1
+            $height = ($monitorConfigLines[$i + 2] -split "=") | Select-Object -Last 1
+            $refresh = ($monitorConfigLines[$i + 3] -split "=") | Select-Object -Last 1
 
             # Inactive displays will be zero on everything basically.
             return  ($height -ne 0 -and $width -ne 0 -and $refresh -ne 0)
@@ -82,7 +82,7 @@ function SetPrimaryScreen() {
 
     & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Default.cfg"
 
-    Start-Sleep -Seconds 3
+    Start-Sleep -Seconds 4
 }
 
 function Get-PrimaryMonitorIds {
@@ -226,13 +226,13 @@ function Create-Pipe($pipeName) {
     return Start-Job -Name "$pipeName-PipeJob" -ScriptBlock {
         param($pipeName) 
         
-        for ($i = 0; $i -lt 10; $i++) {
+        for ($i = 0; $i -lt 5; $i++) {
             # We could be pending a previous termination, so lets wait up to 10 seconds.
             if (-not (Test-Path "\\.\pipe\$pipeName")) {
                 break
             }
             
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 2
         }
         Remove-Item "\\.\pipe\$pipeName" -ErrorAction Ignore
         $pipe = New-Object System.IO.Pipes.NamedPipeServerStream($pipeName, [System.IO.Pipes.PipeDirection]::In, 1, [System.IO.Pipes.PipeTransmissionMode]::Byte, [System.IO.Pipes.PipeOptions]::Asynchronous)
