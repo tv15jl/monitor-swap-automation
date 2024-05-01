@@ -12,11 +12,11 @@ function OnStreamStart() {
     # Always try to restore it at least once, due to a bug in Windows... if a profile restoration fails (especially when switching back to the primary screen),
     # and a stream is initiated again, the display switcher built into windows (Windows + P) may not update and remain stuck on the last used setting.
     # This can cause significant problems in some games, including frozen visuals and black screens.    
-    & .\MultiMonitorTool.exe /LoadConfig "dummy.cfg" 
+    & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Stream.cfg"
     Start-Sleep -Seconds 2
     for ($i = 0; $i -lt 6; $i++) {
         if (-not (IsMonitorActive -monitorId $dummyMonitorId)) {
-            & .\MultiMonitorTool.exe /LoadConfig "dummy.cfg" 
+            & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Stream.cfg"
         }
         else {
             break;
@@ -80,7 +80,7 @@ function SetPrimaryScreen() {
         return
     }
 
-    & .\MultiMonitorTool.exe /LoadConfig "primary.cfg"
+    & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Default.cfg"
 
     Start-Sleep -Seconds 3
 }
@@ -88,7 +88,7 @@ function SetPrimaryScreen() {
 function Get-PrimaryMonitorIds {
     $pattern = '(?<=MonitorID=)(?<id>.*)|(?<=DisplayFrequency=)(?<freq>\d+)'
     $primaryMonitorIds = @()
-    $foundMonitors = [regex]::Matches((Get-Content -Raw -Path "primary.cfg"), $pattern)
+    $foundMonitors = [regex]::Matches((Get-Content -Raw -Path "MultiMonitorTool_Default.cfg"), $pattern)
     for ($i = 0; $i -lt $foundMonitors.Count; $i += 2) {
         $match = $foundMonitors[$i]
         $monitorId = $match.Groups[0].Value

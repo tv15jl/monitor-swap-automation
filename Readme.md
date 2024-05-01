@@ -25,9 +25,9 @@ This is useful for users of Sunshine (a screen sharing software) who experience 
 
 ## INSTRUCTIONS
 
-1. Open up MultiMonitorTool and click on `File -> Save Monitors Configuration` and save it in the current folder this script is located in with the name of `primary.cfg`.
-2. Repeat the same steps of step 1, except save it with the name of `dummy.cfg`.
-3. Open up the `dummy.cfg` file and set every parameter related to your primary monitor's position, refresh rate, etc. to `0`. For example:
+1. Open up MultiMonitorTool and click on `File -> Save Monitors Configuration` and save it in the current folder this script is located in with the name of `MultiMonitorTool_Default.cfg`.
+2. Repeat the same steps of step 1, except save it with the name of `MultiMonitorTool_Stream.cfg`.
+3. Open up the `MultiMonitorTool_Stream.cfg` file and set every parameter related to your primary monitor's position, refresh rate, etc. to `0`. For example:
 
         Name=\\.\DISPLAY1
         MonitorID=MONITOR\GSMC0C8\{4d36e96e-e325-11ce-bfc1-08002be10318}\0009
@@ -54,10 +54,10 @@ This is useful for users of Sunshine (a screen sharing software) who experience 
     In the example above, every numerical value has been set to 0, which lets the script know that the display should be turned off.
     Also take note in the example, that my dummy display should have values configured to let it know that it should be turned on.
 
-4. Verify that the `dummy.cfg` file has only **one** display that contains values for the `BitsPerPixel`, `Width`, `Height`, and so on. 
-4a. For the `primary.cfg file`, it does not matter if there are other displays enabled, but you would want to make sure your dummy is "zeroed out" so you don't end up with an invisible monitor.
+4. Verify that the `MultiMonitorTool_Stream.cfg` file has only **one** display that contains values for the `BitsPerPixel`, `Width`, `Height`, and so on. 
+4a. For the `MultiMonitorTool_Default.cfg file`, it does not matter if there are other displays enabled, but you would want to make sure your dummy is "zeroed out" so you don't end up with an invisible monitor.
 5. Basically, primary will "zero out" the dummy plug, and dummy will "zero out" the main display. This will automatically transfer games and windows back to the primary monitor if setup this way.
-6. In the `dummy.cfg` file, locate your dummy `MonitorId` and copy and paste it to the `dummyMonitorId` key in the settings.json file. Make sure to escape the backslashes.
+6. In the `MultiMonitorTool_Stream.cfg` file, locate your dummy `MonitorId` and copy and paste it to the `dummyMonitorId` key in the settings.json file. Make sure to escape the backslashes.
 7. Validate you have escaped the backslashes, below is an example of a valid settings.json file.
     ```
     {
@@ -85,9 +85,9 @@ If you encounter issues with the script, you can try the following:
 
   Invalid: MONITOR\\GSMC0C8\\{4d36e96e-e325-11ce-bfc1-08002be10318}\\0009
   
-- Check that you have set every parameter related to the primary monitor's resolution in the `dummy.cfg` file to `0`.
-- Check that you have set every parameter related to the dummy monitor's resolution in the `primary.cfg` file to `0`.
-- Check that you have at least one monitor not "zeroed out" in both the primary.cfg and dummy.cfg files.
+- Check that you have set every parameter related to the primary monitor's resolution in the `MultiMonitorTool_Stream.cfg` file to `0`.
+- Check that you have set every parameter related to the dummy monitor's resolution in the `MultiMonitorTool_Default.cfg` file to `0`.
+- Check that you have at least one monitor not "zeroed out" in both the MultiMonitorTool_Default.cfg and MultiMonitorTool_Stream.cfg files.
 - Ensure that you have followed the requirements for Sunshine users as listed above.
 - Increase the startDelay in the settings file if you're experiencing the script only works intermitently.
 - If you are still experiencing issues, try uninstalling and installing it again.
