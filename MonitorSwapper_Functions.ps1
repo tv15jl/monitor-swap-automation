@@ -19,6 +19,10 @@ function OnStreamStart() {
             & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Stream.cfg"
         }
         else {
+            Start-Sleep -Seconds 4
+            & .\QRes.exe /X:$env:SUNSHINE_CLIENT_WIDTH /Y:$env:SUNSHINE_CLIENT_HEIGHT /C:32 /R:$env:SUNSHINE_CLIENT_FPS /D /V
+            Start-Sleep -Seconds 4
+            & .\SetDpi.exe $settings.dummyDpi
             break;
         }
         if ($i -eq 5) {
@@ -81,7 +85,8 @@ function SetPrimaryScreen() {
     }
 
     & .\MultiMonitorTool.exe /LoadConfig "MultiMonitorTool_Default.cfg"
-
+    Start-Sleep -Seconds 4
+    & .\SetDpi.exe $settings.primaryDpi
     Start-Sleep -Seconds 4
 }
 
